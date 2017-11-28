@@ -1,0 +1,16 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: microservice-comsumer
+eureka:
+  client:
+    service-url:
+      defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/
+  instance:
+    prefer-ip-address: true
+zuul:
+  routes:
+    baidu:
+      path: /fang/**
+      url: microservice-provider
