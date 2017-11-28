@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/microservice-comsumer/microservice-comsumer.iml" filepath="$PROJECT_DIR$/microservice-comsumer/microservice-comsumer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-eureka/microservice-eureka.iml" filepath="$PROJECT_DIR$/microservice-eureka/microservice-eureka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/microservice-provider/microservice-provider.iml" filepath="$PROJECT_DIR$/microservice-provider/microservice-provider.iml" />
+    </modules>
+  </component>
+</project>
