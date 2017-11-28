@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConfigurationProperties(prefix="myProps")
-public class MyProps {
+public class Config {
     private String accesstoken;
 
     public String getAccessToken(){

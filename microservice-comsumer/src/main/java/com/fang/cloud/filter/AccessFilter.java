@@ -1,9 +1,12 @@
 package com.fang.cloud.filter;
 
-import com.fang.cloud.conf.MyProps;
+import com.fang.cloud.conf.Config;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,8 +15,12 @@ import javax.servlet.http.HttpServletRequest;
  * Created by quwb on 2017/11/28.
  */
 public class AccessFilter extends ZuulFilter {
+    @Value(value = "${myProps.accesstoken}")
+    private String accesstoken;
     @Autowired
-    private MyProps myProps;
+    private Config config;
+
+    private static Logger log = LoggerFactory.getLogger(AccessFilter.class);
 
     @Override
     public String filterType() {
@@ -31,12 +38,14 @@ public class AccessFilter extends ZuulFilter {
     public Object run() {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
-        Object accessToken = request.getParameter("accessToken");
-        if(accessToken != myProps.getAccessToken()) {
+        String accessToken = request.getParameter("accessToken");
+        log.info(String.format("Comsumer Info:%s, AccessToken:%s", accessToken.toString(), config.getAccessToken()));
+
+        if(!accessToken.equals(accesstoken)) {
             ctx.setSendZuulResponse(false);
             ctx.setResponseStatusCode(401);
-            return myProps.getAccessToken();
+            return null;
         }
-        return myProps.getAccessToken();
+        return null;
     }
 }
