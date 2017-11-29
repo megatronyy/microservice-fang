@@ -1,11 +1,9 @@
 package com.fang.cloud.filter;
 
-import com.fang.cloud.conf.Config;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,8 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 public class AccessFilter extends ZuulFilter {
     @Value(value = "${myProps.accesstoken}")
     private String accesstoken;
-    @Autowired
-    private Config config;
 
     private static Logger log = LoggerFactory.getLogger(AccessFilter.class);
 
@@ -39,11 +35,12 @@ public class AccessFilter extends ZuulFilter {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
         String accessToken = request.getParameter("accessToken");
-        log.info(String.format("Comsumer Info:%s, AccessToken:%s", accessToken.toString(), config.getAccessToken()));
+        log.info(String.format("Comsumer Info:%s, AccessToken:%s", accessToken.toString(), accesstoken));
 
         if(!accessToken.equals(accesstoken)) {
             ctx.setSendZuulResponse(false);
             ctx.setResponseStatusCode(401);
+            ctx.setResponseBody("can use");
             return null;
         }
         return null;
