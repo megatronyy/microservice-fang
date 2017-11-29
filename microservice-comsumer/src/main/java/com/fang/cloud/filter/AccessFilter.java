@@ -34,7 +34,7 @@ public class AccessFilter extends ZuulFilter {
     public Object run() {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
-        String accessToken = request.getParameter("accessToken");
+        String accessToken = request.getParameter("accesstoken");
         log.info(String.format("Comsumer Info:%s, AccessToken:%s", accessToken.toString(), accesstoken));
 
         if(!accessToken.equals(accesstoken)) {
