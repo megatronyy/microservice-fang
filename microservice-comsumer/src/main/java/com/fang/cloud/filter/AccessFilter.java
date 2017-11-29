@@ -40,7 +40,7 @@ public class AccessFilter extends ZuulFilter {
         if(!accessToken.equals(accesstoken)) {
             ctx.setSendZuulResponse(false);
             ctx.setResponseStatusCode(401);
-            ctx.setResponseBody("can use");
+            ctx.setResponseBody("{\"HttpStatus\": 401, \"Message\": \"no permission\", \"Success\": false}");
             return null;
         }
         return null;
