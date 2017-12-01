@@ -1,64 +1,70 @@
 package com.fang.cloud.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * Created by quwb on 2017/11/28.
  */
-@Entity
-@Table(name = "businesstype")
-public class BusinessType {
-    @Id
-    @Column(name = "BusinessID")
-    private Integer id;
-    private String businessdes;
-    private Short sortnum;
-    private Short isshow;
-    private String icon;
-    private String largeicon;
+public class BusinessType implements Serializable {
+    private Integer BusinessID;
+    private String BusinessDes;
+    private Short SortNum;
+    private Short IsShow;
+    private String Icon;
+    private String LargeIcon;
 
-    public Integer getId(){
-        return this.id;
+    public BusinessType(){
+        super();
     }
-    public  void setId(Integer businessId){
-        this.id = businessId;
+
+    public BusinessType(Integer businessId, String businessDes, Short sortNum, Short isShow, String icon, String largeIcon){
+        super();
+        this.BusinessID = businessId;
+        this.BusinessDes = businessDes;
+        this.SortNum = sortNum;
+        this.IsShow = isShow;
+        this.Icon = icon;
+        this.LargeIcon = largeIcon;
+    }
+    public Integer getBusinessID(){
+        return this.BusinessID;
+    }
+    public  void setBusinessID(Integer businessId){
+        this.BusinessID = businessId;
     }
 
     public String getBusinessDes(){
-        return this.businessdes;
+        return this.BusinessDes;
     }
     public  void setBusinessDes(String businessDes){
-        this.businessdes = businessDes;
+        this.BusinessDes = businessDes;
     }
 
     public Short getSortNum(){
-        return this.sortnum;
+        return this.SortNum;
     }
     public  void setSortNum(Short sortNum){
-        this.sortnum = sortNum;
+        this.SortNum = sortNum;
     }
 
     public Short getIsShow(){
-        return this.isshow;
+        return this.IsShow;
     }
     public  void setIsShow(Short isShow){
-        this.isshow = isShow;
+        this.IsShow = isShow;
     }
 
     public String getIcon(){
-        return this.icon;
+        return this.Icon;
     }
     public  void setIcon(String icon){
-        this.icon = icon;
+        this.Icon = icon;
     }
 
     public String getLargeIcon(){
-        return this.largeicon;
+        return this.LargeIcon;
     }
     public  void setLargeIcon(String largeIcon){
-        this.largeicon = largeIcon;
+        this.LargeIcon = largeIcon;
     }
 }

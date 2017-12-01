@@ -19,7 +19,3 @@ services:
     image: fang/microservice-comsumer:0.0.1-SNAPSHOT
     ports:
       - "9000:9000"
-  microservice-webapp:
-    image: website-app
-    ports:
-      - "5000:5000"
