@@ -17,7 +17,7 @@ public class BusinessTypeController {
 
     @GetMapping("/business/{businessId}")
     public BusinessType findById(@PathVariable int businessId){
-        BusinessType findOne = this.businessTypeMapper.getOne(businessId);
+        BusinessType findOne = this.businessTypeMapper.selectByPrimaryKey(businessId);
         return findOne;
     }
 }
