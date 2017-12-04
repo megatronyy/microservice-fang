@@ -2,12 +2,11 @@ package com.fang.cloud.controller;
 
 import com.fang.cloud.entity.Customization;
 import com.fang.cloud.mapper.CustomizationMapper;
+import com.fang.cloud.mapper.UserShopRelaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 /**
@@ -19,13 +18,21 @@ public class CustomizationController {
     @Autowired
     private CustomizationMapper customizationMapper;
 
+    @Autowired
+    private UserShopRelaMapper userShopRelaMapper;
+
     @RequestMapping("getcustom/{userId}")
-    public List<Customization> GetCustomization(Integer userId){
+    public List<Customization> GetCustomization(@PathVariable Integer userId){
         return customizationMapper.selectByUserId(userId);
     }
 
     @RequestMapping(value = "setcustom", method = { RequestMethod.POST })
     public int SetCustomization(@RequestBody Customization custom){
         return customizationMapper.insertSelective(custom);
+    }
+
+    @RequestMapping("getshoplist/{userId}")
+    public ResultSet getUserShopList(@PathVariable Integer userId){
+        return userShopRelaMapper.getUserShopRela(userId);
     }
 }
