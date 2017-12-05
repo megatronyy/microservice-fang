@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fang.cloud.mapper.UserData">
+<mapper namespace="com.fang.cloud.mapper.UserDataMapper">
     <resultMap id="UserDataResultMap" type="com.fang.cloud.entity.UserData">
         <id column="UserID" jdbcType="INTEGER" property="userid" />
         <result column="UserName" jdbcType="NVARCHAR" property="username" />
@@ -8,24 +8,17 @@
         <result column="Password" jdbcType="NVARCHAR" property="password" />
         <result column="Mobile" jdbcType="CHAR" property="mobile" />
         <result column="LastLoginTime" jdbcType="TIMESTAMP" property="lastlogintime" />
-        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
-        <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
-        <result column="IsActive" jdbcType="SMALLINT" property="isactive" />
+        <collection property="userShopRela" column="UserID"
+            select="com.fang.cloud.mapper.UserShopRelaMapper.selectByUserId" />
     </resultMap>
-    <select id="getUserData" parameterType="java.lang.Integer" resultMap="UserDataResultMap">
-        SELECT t1.UserID UserID ,
-                t1.UserName UserName ,
-                t1.OpenID OpenID ,
-                t1.Password Password ,
-                t1.Mobile Mobile ,
-                t1.LastLoginTime LastLoginTime ,
-                t1.CreateTime CreateTime,
-                t1.UpdateTime UpdateTime,
-                t1.IsActive IsActive
-        FROM    dbo.UserAccount t1 ( NOLOCK )
-                INNER JOIN dbo.UserShopRela t2 ( NOLOCK ) ON t2.UserID = t1.UserID
-                INNER JOIN dbo.ShopInfo t3 ( NOLOCK ) ON t3.ShopID = t2.ShopID
-                LEFT JOIN dbo.PublisherInfo t4 ( NOLOCK ) ON t4.ShopID = t3.ShopID
-        WHERE t1.UserID=#{userid,jdbcType=INTEGER}
+    <select id="getUserData" parameterType="java.util.Map" resultMap="UserDataResultMap">
+        SELECT UserID,
+               UserName ,
+               OpenID ,
+               Password ,
+               Mobile ,
+               LastLoginTime
+        FROM   dbo.UserAccount ( NOLOCK )
+        WHERE UserID=#{userid,jdbcType=INTEGER}
     </select>
 </mapper>

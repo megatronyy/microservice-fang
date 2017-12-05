@@ -36,8 +36,8 @@ public class CustomizationController {
     @RequestMapping("getshoplist/{userId}")
     public UserData getUserShopList(@PathVariable Integer userId){
         Map<String, Object> param = new HashMap<String, Object>();
-        param.put("UserId", userId);
-        UserData userData = userDataMapper.getUserData(userId);
+        param.put("userid", userId);
+        UserData userData = userDataMapper.getUserData(param);
         return userData;
     }
 }

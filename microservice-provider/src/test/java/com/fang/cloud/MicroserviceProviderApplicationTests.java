@@ -24,9 +24,9 @@ public class MicroserviceProviderApplicationTests {
 
 	@Test
 	public void contextLoads() {
-//		Map<String, Object> param = new HashMap<String, Object>();
-//		param.put("UserId", 10000);
-		UserData userData = userDataMapper.getUserData(100000);
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("userid", 100000);
+		UserData userData = userDataMapper.getUserData(param);
 		assert userData.getUserid()>0;
 		//UserAccount userAccount = userAccountMapper.selectByPrimaryKey(100000);
 		//assert userAccount.getUserid()>0;

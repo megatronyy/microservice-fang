@@ -9,5 +9,5 @@ import java.util.Map;
  */
 public interface UserDataMapper {
     //UserData getUserData(Map<String, Object> param);
-    UserData getUserData(Integer userid);
+    UserData getUserData(Map<String, Object> param);
 }
