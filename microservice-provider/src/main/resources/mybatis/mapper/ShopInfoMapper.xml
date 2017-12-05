@@ -21,6 +21,8 @@
     <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
     <result column="IsActive" jdbcType="SMALLINT" property="isactive" />
+    <association property="publisherInfo" column="ShopID"
+                 select="com.fang.cloud.mapper.PublisherInfoMapper.selectByPrimaryKey" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--

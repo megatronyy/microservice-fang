@@ -11,6 +11,8 @@
     <result column="ShopID" jdbcType="INTEGER" property="shopid" />
     <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="IsActive" jdbcType="SMALLINT" property="isactive" />
+    <association property="shopInfo" column="ShopID"
+                 select="com.fang.cloud.mapper.ShopInfoMapper.selectByPrimaryKey" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
