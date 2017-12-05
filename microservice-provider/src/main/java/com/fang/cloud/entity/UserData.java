@@ -209,4 +209,8 @@ public class UserData {
 
     public List<UserShopRela> getUserShopRela(){return this.userShopRela;}
     public void setUserShopRela(List<UserShopRela> userShopRela){this.userShopRela=userShopRela;}
+
+    private List<Customization> customizations;
+    public List<Customization> getCustomizations(){return this.customizations;}
+    public void setCustomizations(List<Customization> customizations){this.customizations=customizations;}
 }

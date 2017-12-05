@@ -15,17 +15,14 @@ import java.util.Map;
  * Created by quwb on 2017/12/4.
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/custom")
 public class CustomizationController {
     @Autowired
     private CustomizationMapper customizationMapper;
 
-    @Autowired
-    private UserDataMapper userDataMapper;
-
     @RequestMapping("getcustom/{userId}")
     public List<Customization> GetCustomization(@PathVariable Integer userId){
-        return customizationMapper.selectByUserId(userId);
+        return null; //customizationMapper.selectByUserId(userId);
     }
 
     @RequestMapping(value = "setcustom", method = { RequestMethod.POST })
@@ -33,11 +30,5 @@ public class CustomizationController {
         return customizationMapper.insertSelective(custom);
     }
 
-    @RequestMapping("getshoplist/{userId}")
-    public UserData getUserShopList(@PathVariable Integer userId){
-        Map<String, Object> param = new HashMap<String, Object>();
-        param.put("userid", userId);
-        UserData userData = userDataMapper.getUserData(param);
-        return userData;
-    }
+
 }

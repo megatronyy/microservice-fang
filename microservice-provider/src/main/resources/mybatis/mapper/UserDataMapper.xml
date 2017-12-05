@@ -9,7 +9,9 @@
         <result column="Mobile" jdbcType="CHAR" property="mobile" />
         <result column="LastLoginTime" jdbcType="TIMESTAMP" property="lastlogintime" />
         <collection property="userShopRela" column="UserID"
-            select="com.fang.cloud.mapper.UserShopRelaMapper.selectByUserId" />
+                    select="com.fang.cloud.mapper.UserShopRelaMapper.selectByUserId" />
+        <collection property="customizations" column="UserID"
+                    select="com.fang.cloud.mapper.CustomizationMapper.selectByUserId" />
     </resultMap>
     <select id="getUserData" parameterType="java.util.Map" resultMap="UserDataResultMap">
         SELECT UserID,

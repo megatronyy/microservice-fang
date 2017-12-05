@@ -55,8 +55,8 @@ public interface CustomizationMapper {
 
     /**
      * 根据用户ID获取用户定制信息
-     * @param userId
+     * @param userid
      * @return
      */
-    List<Customization> selectByUserId(Integer userId);
+   List<Customization> selectByUserId(Integer userid);
 }
