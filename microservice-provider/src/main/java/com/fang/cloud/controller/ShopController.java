@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Created by quwb on 2017/11/28.
+ * Created by quwb on 2017/12/5.
  */
 @RestController
 @RequestMapping("/shop")
-public class BusinessTypeController {
+public class ShopController {
     @Autowired
     private BusinessTypeMapper businessTypeMapper;
 
