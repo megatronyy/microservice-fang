@@ -15,7 +15,7 @@ import java.util.Map;
  * Created by quwb on 2017/12/4.
  */
 @RestController
-@RequestMapping("/custom")
+@RequestMapping("/user")
 public class CustomizationController {
     @Autowired
     private CustomizationMapper customizationMapper;
