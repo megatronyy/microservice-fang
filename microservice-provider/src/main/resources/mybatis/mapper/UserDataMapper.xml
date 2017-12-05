@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fang.cloud.mapper.UserData">
+    <resultMap id="UserDataResultMap" type="com.fang.cloud.entity.UserData">
+        <id column="UserID" jdbcType="INTEGER" property="userid" />
+        <result column="UserName" jdbcType="NVARCHAR" property="username" />
+        <result column="OpenID" jdbcType="NVARCHAR" property="openid" />
+        <result column="Password" jdbcType="NVARCHAR" property="password" />
+        <result column="Mobile" jdbcType="CHAR" property="mobile" />
+        <result column="LastLoginTime" jdbcType="TIMESTAMP" property="lastlogintime" />
+        <collection property="shopInfo" ofType="com.fang.cloud.entity.ShopInfo" >
+            <id column="ShopID" jdbcType="BIGINT" property="shopid" />
+            <result column="ShopTilte" jdbcType="NVARCHAR" property="shoptilte" />
+            <result column="ShopPrice" jdbcType="DOUBLE" property="shopprice" />
+            <result column="ShopArea" jdbcType="INTEGER" property="shoparea" />
+            <result column="ShopDisc" jdbcType="NVARCHAR" property="shopdisc" />
+            <result column="BusinessID" jdbcType="INTEGER" property="businessid" />
+            <result column="CityName" jdbcType="NVARCHAR" property="cityname" />
+            <result column="AreaName" jdbcType="NVARCHAR" property="areaname" />
+            <result column="BurgName" jdbcType="NVARCHAR" property="burgname" />
+            <result column="SourceID" jdbcType="INTEGER" property="sourceid" />
+            <result column="PublishTime" jdbcType="TIMESTAMP" property="publishtime" />
+            <result column="ModifyStatus" jdbcType="SMALLINT" property="modifystatus" />
+            <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+            <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+            <result column="IsActive" jdbcType="SMALLINT" property="isactive" />
+        </collection>
+        <collection property="publisherInfo" ofType="com.fang.cloud.entity.PublisherInfo" >
+            <id column="P_ShopID" jdbcType="BIGINT" property="shopid" />
+            <result column="P_UserName" jdbcType="NVARCHAR" property="username" />
+            <result column="UserMobile" jdbcType="VARCHAR" property="usermobile" />
+            <result column="MobilePic" jdbcType="NVARCHAR" property="mobilepic" />
+            <result column="P_CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+        </collection>
+    </resultMap>
+    <select id="getUserData" parameterType="java.util.Map" resultMap="UserDataResultMap">
+        SELECT t1.UserID ,
+               t1.UserName ,
+               t1.OpenID ,
+               t1.Password ,
+               t1.Mobile ,
+               t1.LastLoginTime ,
+               t3.ShopID ,
+               t3.ShopTilte ,
+               t3.ShopPrice ,
+               t3.ShopArea ,
+               t3.ShopDisc ,
+               t3.BusinessID ,
+               t3.CityName ,
+               t3.AreaName ,
+               t3.BurgName ,
+               t3.SourceID ,
+               t3.PublishTime ,
+               t3.ModifyStatus ,
+               t3.CreateTime ,
+               t3.UpdateTime ,
+               t3.IsActive,
+               ISNULL(t4.ShopID, 0) AS P_ShopID,
+               ISNULL(t4.UserName, '')  AS P_UserName,
+               ISNULL(t4.UserMobile, '') UserMobile,
+               ISNULL(t4.MobilePic, '') MobilePic ,
+               ISNULL(t4.CreateTime, '1900-01-01') AS P_CreateTime
+        FROM dbo.UserAccount t1 (NOLOCK)
+        INNER JOIN dbo.UserShopRela t2 (NOLOCK) ON t2.UserID = t1.UserID
+        INNER JOIN dbo.ShopInfo t3 (NOLOCK) ON t3.ShopID = t2.ShopID
+        LEFT JOIN dbo.PublisherInfo t4 (NOLOCK) ON t4.ShopID = t3.ShopID
+        WHERE t1.UserID=#{UserId, jdbcType=INTEGER}
+    </select>
+</mapper>

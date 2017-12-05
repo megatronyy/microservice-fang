@@ -2,7 +2,8 @@ package com.fang.cloud.mapper;
 
 import com.fang.cloud.entity.UserShopRela;
 
-import java.sql.ResultSet;
+import java.util.List;
+import java.util.Map;
 
 public interface UserShopRelaMapper {
     /**
@@ -52,6 +53,4 @@ public interface UserShopRelaMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(UserShopRela record);
-
-    ResultSet getUserShopRela(int userId);
 }
