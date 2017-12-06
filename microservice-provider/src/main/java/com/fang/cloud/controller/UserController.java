@@ -1,8 +1,10 @@
 package com.fang.cloud.controller;
 
 import com.fang.cloud.entity.Customization;
+import com.fang.cloud.entity.UserAccount;
 import com.fang.cloud.entity.UserData;
 import com.fang.cloud.mapper.CustomizationMapper;
+import com.fang.cloud.mapper.UserAccountMapper;
 import com.fang.cloud.mapper.UserDataMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +25,11 @@ public class UserController {
     @Autowired
     private CustomizationMapper customizationMapper;
 
-    @RequestMapping("info/{userId}")
-    public UserData getUserInfo(@PathVariable Integer userId){
+    @Autowired
+    private UserAccountMapper userAccountMapper;
+
+    @RequestMapping(value = "info", method = { RequestMethod.POST })
+    public UserData getUserInfo(@RequestBody Integer userId){
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("userid", userId);
         UserData userData = userDataMapper.getUserData(param);
@@ -32,12 +37,37 @@ public class UserController {
     }
 
     @RequestMapping("getcustom/{userId}")
-    public List<Customization> GetCustomization(@PathVariable Integer userId){
+    public List<Customization> getCustomization(@PathVariable Integer userId){
         return customizationMapper.selectByUserId(userId);
     }
 
+    /**
+     *
+     * @param custom
+     * @return
+     */
     @RequestMapping(value = "setcustom", method = { RequestMethod.POST })
-    public int SetCustomization(@RequestBody Customization custom){
+    public int setCustomization(@RequestBody Customization custom){
         return customizationMapper.insertSelective(custom);
+    }
+
+    /**
+     * 添加帐号
+     * @param userAccount
+     * @return
+     */
+    @RequestMapping(value = "add", method = { RequestMethod.POST })
+    public int addAccount(@RequestBody UserAccount userAccount){
+        return userAccountMapper.insert(userAccount);
+    }
+
+    /**
+     * 更新帐号信息
+     * @param userAccount
+     * @return
+     */
+    @RequestMapping(value = "update", method = { RequestMethod.POST })
+    public int updateAccount(@RequestBody UserAccount userAccount){
+        return userAccountMapper.updateByPrimaryKey(userAccount);
     }
 }
