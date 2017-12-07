@@ -1,7 +1,7 @@
 package com.fang.cloud.controller;
 
-import com.fang.cloud.dao.ResponseEntity;
-import com.fang.cloud.dao.UserRequestEntity;
+import com.fang.cloud.dao.response.ResponseEntity;
+import com.fang.cloud.dao.request.UserRequestEntity;
 import com.fang.cloud.entity.Customization;
 import com.fang.cloud.entity.UserAccount;
 import com.fang.cloud.entity.UserData;
