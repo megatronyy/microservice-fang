@@ -1,4 +1,4 @@
-package com.fang.cloud.dao;
+package com.fang.cloud.dao.response;
 
 /**
  * Created by quwb on 2017/12/6.

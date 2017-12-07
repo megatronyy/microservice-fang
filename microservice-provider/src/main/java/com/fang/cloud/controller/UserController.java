@@ -38,13 +38,23 @@ public class UserController {
 
         //返回结果
         ResponseEntity<UserData> responseEntity = new ResponseEntity<UserData>();
-        responseEntity.setIsSuccess(true);
-        responseEntity.setMessage("获取用户信息成功");
-        responseEntity.setCode(0);
-        responseEntity.setSign("");
-        responseEntity.setAppId("");
-        responseEntity.setData(userData);
-        return responseEntity;
+        if(userData != null){
+            responseEntity.setIsSuccess(true);
+            responseEntity.setMessage("获取用户信息成功");
+            responseEntity.setCode(0);
+            responseEntity.setSign("");
+            responseEntity.setAppId("");
+            responseEntity.setData(userData);
+            return responseEntity;
+        }else{
+            responseEntity.setIsSuccess(false);
+            responseEntity.setMessage("获取用户信息失败");
+            responseEntity.setCode(100);
+            responseEntity.setSign("");
+            responseEntity.setAppId("");
+            responseEntity.setData(userData);
+            return responseEntity;
+        }
     }
 
     @RequestMapping("getcustom/{userId}")
