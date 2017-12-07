@@ -1,5 +1,7 @@
 package com.fang.cloud.controller;
 
+import com.fang.cloud.dao.ResponseEntity;
+import com.fang.cloud.dao.UserRequestEntity;
 import com.fang.cloud.entity.Customization;
 import com.fang.cloud.entity.UserAccount;
 import com.fang.cloud.entity.UserData;
@@ -29,11 +31,20 @@ public class UserController {
     private UserAccountMapper userAccountMapper;
 
     @RequestMapping(value = "info", method = { RequestMethod.POST })
-    public UserData getUserInfo(@RequestBody Integer userId){
+    public ResponseEntity<UserData> getUserInfo(@RequestBody UserRequestEntity user){
         Map<String, Object> param = new HashMap<String, Object>();
-        param.put("userid", userId);
+        param.put("userid", user.getUserId());
         UserData userData = userDataMapper.getUserData(param);
-        return userData;
+
+        //返回结果
+        ResponseEntity<UserData> responseEntity = new ResponseEntity<UserData>();
+        responseEntity.setIsSuccess(true);
+        responseEntity.setMessage("获取用户信息成功");
+        responseEntity.setCode(0);
+        responseEntity.setSign("");
+        responseEntity.setAppId("");
+        responseEntity.setData(userData);
+        return responseEntity;
     }
 
     @RequestMapping("getcustom/{userId}")
