@@ -1,0 +1,21 @@
+version: "2"
+services:
+  peer1:
+    image: fang/microservice-eureka:0.0.1-SNAPSHOT
+    ports:
+      - "8761:8761"
+    environment:
+      - spring.profiles.active=peer1
+  peer2:
+    image: fang/microservice-eureka:0.0.1-SNAPSHOT
+    hostname: peer2
+    ports:
+      - "8762:8762"
+    environment:
+      - spring.profiles.active=peer2
+  microservice-provider:
+    image: fang/microservice-provider:0.0.1-SNAPSHOT
+  microservice-comsumer:
+    image: fang/microservice-comsumer:0.0.1-SNAPSHOT
+    ports:
+      - "9000:9000"
