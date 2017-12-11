@@ -50,4 +50,6 @@ public interface UserAccountMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(UserAccount record);
+
+    int isExistsForUser(String mobile);
 }

@@ -11,6 +11,15 @@ public class ResponseEntity<T> {
     private String appId;
     private T data;
 
+    public ResponseEntity(boolean isSuccess, String message, int code, String sign, String appId, T data){
+        this.isSuccess = isSuccess;
+        this.message = message;
+        this.code = code;
+        this.sign = sign;
+        this.appId = appId;
+        this.data = data;
+    }
+
     public boolean getIsSuccess(){ return this.isSuccess; }
     public void setIsSuccess(boolean isSuccess){ this.isSuccess = isSuccess; }
 

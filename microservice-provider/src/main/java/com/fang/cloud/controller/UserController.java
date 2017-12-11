@@ -37,29 +37,17 @@ public class UserController {
         UserData userData = userDataMapper.getUserData(param);
 
         //返回结果
-        ResponseEntity<UserData> responseEntity = new ResponseEntity<UserData>();
         if(userData != null){
-            responseEntity.setIsSuccess(true);
-            responseEntity.setMessage("获取用户信息成功");
-            responseEntity.setCode(0);
-            responseEntity.setSign("");
-            responseEntity.setAppId("");
-            responseEntity.setData(userData);
-            return responseEntity;
+            return new ResponseEntity<UserData>(true, "获取用户信息成功", 0, "", "", userData);
         }else{
-            responseEntity.setIsSuccess(false);
-            responseEntity.setMessage("获取用户信息失败");
-            responseEntity.setCode(100);
-            responseEntity.setSign("");
-            responseEntity.setAppId("");
-            responseEntity.setData(userData);
-            return responseEntity;
+            return new ResponseEntity<UserData>(false, "获取用户信息失败", -100, "", "", userData);
         }
     }
 
     @RequestMapping("getcustom/{userId}")
-    public List<Customization> getCustomization(@PathVariable Integer userId){
-        return customizationMapper.selectByUserId(userId);
+    public ResponseEntity<List<Customization>> getCustomization(@PathVariable Integer userId){
+        List<Customization> list = customizationMapper.selectByUserId(userId);
+        return new ResponseEntity<List<Customization>>(true, "获取用户定制信息成功", 0, "", "", list);
     }
 
     /**
@@ -68,8 +56,9 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "setcustom", method = { RequestMethod.POST })
-    public int setCustomization(@RequestBody Customization custom){
-        return customizationMapper.insertSelective(custom);
+    public ResponseEntity<Integer> setCustomization(@RequestBody Customization custom){
+        Integer ret = customizationMapper.insertSelective(custom);
+        return new ResponseEntity<Integer>(true, "用户添加定制成功", 0, "", "", ret);
     }
 
     /**
@@ -78,8 +67,14 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "add", method = { RequestMethod.POST })
-    public int addAccount(@RequestBody UserAccount userAccount){
-        return userAccountMapper.insert(userAccount);
+    public ResponseEntity<Integer> addAccount(@RequestBody UserAccount userAccount){
+        int isExists = userAccountMapper.isExistsForUser(userAccount.getMobile());
+        if(isExists>0){
+            return new ResponseEntity<Integer>(false, "添加用户信息失败", -100, "", "", 0);
+        }else{
+            Integer ret = userAccountMapper.insert(userAccount);
+            return new ResponseEntity<Integer>(true, "手机号已经存在", 0, "", "", ret);
+        }
     }
 
     /**
@@ -88,7 +83,8 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "update", method = { RequestMethod.POST })
-    public int updateAccount(@RequestBody UserAccount userAccount){
-        return userAccountMapper.updateByPrimaryKey(userAccount);
+    public ResponseEntity<Integer> updateAccount(@RequestBody UserAccount userAccount){
+        Integer ret =  userAccountMapper.updateByPrimaryKey(userAccount);
+        return new ResponseEntity<Integer>(true, "更新用户信息成功", 0, "", "", ret);
     }
 }
