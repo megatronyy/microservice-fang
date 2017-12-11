@@ -1,5 +1,6 @@
 package com.fang.cloud.controller;
 
+import com.fang.cloud.common.Security;
 import com.fang.cloud.dao.response.ResponseEntity;
 import com.fang.cloud.dao.request.UserRequestEntity;
 import com.fang.cloud.entity.Customization;
@@ -10,7 +11,6 @@ import com.fang.cloud.mapper.UserAccountMapper;
 import com.fang.cloud.mapper.UserDataMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,10 +70,12 @@ public class UserController {
     public ResponseEntity<Integer> addAccount(@RequestBody UserAccount userAccount){
         int isExists = userAccountMapper.isExistsForUser(userAccount.getMobile());
         if(isExists>0){
-            return new ResponseEntity<Integer>(false, "添加用户信息失败", -100, "", "", 0);
+            return new ResponseEntity<Integer>(false, "手机号已经存在", -100, "", "", 0);
         }else{
+            //对密码进行md5加密
+            userAccount.setPassword(Security.getMD5(userAccount.getPassword()));
             Integer ret = userAccountMapper.insert(userAccount);
-            return new ResponseEntity<Integer>(true, "手机号已经存在", 0, "", "", ret);
+            return new ResponseEntity<Integer>(true, "添加用户成功", 0, "", "", ret);
         }
     }
 
@@ -84,7 +86,33 @@ public class UserController {
      */
     @RequestMapping(value = "update", method = { RequestMethod.POST })
     public ResponseEntity<Integer> updateAccount(@RequestBody UserAccount userAccount){
+        //对密码进行md5加密
+        userAccount.setMobile(Security.getMD5(userAccount.getMobile()));
         Integer ret =  userAccountMapper.updateByPrimaryKey(userAccount);
         return new ResponseEntity<Integer>(true, "更新用户信息成功", 0, "", "", ret);
+    }
+
+    /**
+     * 用户登录
+     * @param userAccount
+     * @return
+     */
+    @RequestMapping(value = "login")
+    public ResponseEntity<UserAccount> Login(@RequestParam String mobile, @RequestParam String pwd){
+        if(mobile.isEmpty() || pwd.isEmpty()){
+            return new ResponseEntity<UserAccount>(false, "传入的参数有误", -99, "", "", null);
+        }
+
+        String md5Pwd = Security.getMD5(pwd);
+
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("mobile", mobile);
+        param.put("password", md5Pwd);
+
+        UserAccount userAccount = userAccountMapper.selectForLogin(param);
+        if(userAccount != null)
+            return new ResponseEntity<UserAccount>(true, "用户登录成功", 0, "", "", userAccount);
+        else
+            return new ResponseEntity<UserAccount>(false, "用户名或密码错误", -100, "", "", null);
     }
 }

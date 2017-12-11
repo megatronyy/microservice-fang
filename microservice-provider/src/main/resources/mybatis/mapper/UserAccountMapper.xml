@@ -40,6 +40,12 @@
     FROM UserAccount (NOLOCK)
     WHERE  Mobile=#{mobile, jdbcType=CHAR}
   </select>
+  <select id="selectForLogin" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM UserAccount (NOLOCK)
+    WHERE Mobile = #{mobile, jdbcType=NVARCHAR} AND Password = #{password, jdbcType=NVARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--
       WARNING - @mbg.generated
