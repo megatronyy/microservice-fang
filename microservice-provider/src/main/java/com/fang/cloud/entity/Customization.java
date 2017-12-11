@@ -1,8 +1,5 @@
 package com.fang.cloud.entity;
 
-import org.bouncycastle.asn1.cms.TimeStampAndCRL;
-
-import java.sql.Timestamp;
 import java.util.Date;
 
 public class Customization {

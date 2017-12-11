@@ -3,7 +3,6 @@ package com.fang.cloud.mapper;
 import com.fang.cloud.entity.UserShopRela;
 
 import java.util.List;
-import java.util.Map;
 
 public interface UserShopRelaMapper {
     /**
