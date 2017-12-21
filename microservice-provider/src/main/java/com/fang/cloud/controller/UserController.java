@@ -4,9 +4,11 @@ import com.fang.cloud.common.Security;
 import com.fang.cloud.dao.response.ResponseEntity;
 import com.fang.cloud.dao.request.UserRequestEntity;
 import com.fang.cloud.entity.Customization;
+import com.fang.cloud.entity.MsgInfo;
 import com.fang.cloud.entity.UserAccount;
 import com.fang.cloud.entity.UserData;
 import com.fang.cloud.mapper.CustomizationMapper;
+import com.fang.cloud.mapper.MsgInfoMapper;
 import com.fang.cloud.mapper.UserAccountMapper;
 import com.fang.cloud.mapper.UserDataMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class UserController {
 
     @Autowired
     private UserAccountMapper userAccountMapper;
+
+    @Autowired
+    private MsgInfoMapper msgInfoMapper;
 
     @RequestMapping(value = "info", method = { RequestMethod.POST })
     public ResponseEntity<UserData> getUserInfo(@RequestBody UserRequestEntity user){
@@ -114,5 +119,18 @@ public class UserController {
             return new ResponseEntity<UserAccount>(true, "用户登录成功", 0, "", "", userAccount);
         else
             return new ResponseEntity<UserAccount>(false, "用户名或密码错误", -100, "", "", null);
+    }
+
+    @RequestMapping(value = "send")
+    public ResponseEntity<Integer> SendMsg(@RequestBody MsgInfo msgInfo){
+        if(msgInfo == null || msgInfo.getMobile()==""){
+            return new ResponseEntity<Integer>(false, "传入的参数有误", -99, "", "", 0);
+        }
+
+        Integer ret = msgInfoMapper.insertSelective(msgInfo);
+        if(ret == 0)
+            return new ResponseEntity<Integer>(false, "发送短信失败", -99, "", "", ret);
+        else
+            return new ResponseEntity<Integer>(true, "发送短信成功", 0, "", "", ret);
     }
 }

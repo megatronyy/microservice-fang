@@ -13,7 +13,3 @@ services:
       - "8762:8762"
     environment:
       - spring.profiles.active=peer2
-  microservice-provider:
-    image: fang/microservice-provider:0.0.1-SNAPSHOT
-    ports:
-      - "9001:8010"
