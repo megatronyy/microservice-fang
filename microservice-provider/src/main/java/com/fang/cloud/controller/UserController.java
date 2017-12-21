@@ -3,14 +3,8 @@ package com.fang.cloud.controller;
 import com.fang.cloud.common.Security;
 import com.fang.cloud.dao.response.ResponseEntity;
 import com.fang.cloud.dao.request.UserRequestEntity;
-import com.fang.cloud.entity.Customization;
-import com.fang.cloud.entity.MsgInfo;
-import com.fang.cloud.entity.UserAccount;
-import com.fang.cloud.entity.UserData;
-import com.fang.cloud.mapper.CustomizationMapper;
-import com.fang.cloud.mapper.MsgInfoMapper;
-import com.fang.cloud.mapper.UserAccountMapper;
-import com.fang.cloud.mapper.UserDataMapper;
+import com.fang.cloud.entity.*;
+import com.fang.cloud.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
@@ -34,6 +28,9 @@ public class UserController {
 
     @Autowired
     private MsgInfoMapper msgInfoMapper;
+
+    @Autowired
+    private MobileCodeInfoMapper mobileCodeInfoMapper;
 
     @RequestMapping(value = "info", method = { RequestMethod.POST })
     public ResponseEntity<UserData> getUserInfo(@RequestBody UserRequestEntity user){
@@ -99,7 +96,7 @@ public class UserController {
 
     /**
      * 用户登录
-     * @param userAccount
+     * @param mobile
      * @return
      */
     @RequestMapping(value = "login")
@@ -121,8 +118,13 @@ public class UserController {
             return new ResponseEntity<UserAccount>(false, "用户名或密码错误", -100, "", "", null);
     }
 
+    /**
+     * 发送短信
+     * @param msgInfo
+     * @return
+     */
     @RequestMapping(value = "send")
-    public ResponseEntity<Integer> SendMsg(@RequestBody MsgInfo msgInfo){
+    public ResponseEntity<Integer> sendMsg(@RequestBody MsgInfo msgInfo){
         if(msgInfo == null || msgInfo.getMobile()==""){
             return new ResponseEntity<Integer>(false, "传入的参数有误", -99, "", "", 0);
         }
@@ -132,5 +134,18 @@ public class UserController {
             return new ResponseEntity<Integer>(false, "发送短信失败", -99, "", "", ret);
         else
             return new ResponseEntity<Integer>(true, "发送短信成功", 0, "", "", ret);
+    }
+
+    @RequestMapping(value = "code")
+    public ResponseEntity<Integer> getCode(@RequestBody MobileCodeInfo mobileCodeInfo){
+        if(mobileCodeInfo == null || mobileCodeInfo.getMobile()==""){
+            return new ResponseEntity<Integer>(false, "传入的参数有误", -99, "", "", 0);
+        }
+
+        Integer ret = mobileCodeInfoMapper.insertSelective(mobileCodeInfo);
+        if(ret == 0)
+            return new ResponseEntity<Integer>(false, "添加验证码失败", -99, "", "", ret);
+        else
+            return new ResponseEntity<Integer>(true, "添加验证码成功", 0, "", "", ret);
     }
 }

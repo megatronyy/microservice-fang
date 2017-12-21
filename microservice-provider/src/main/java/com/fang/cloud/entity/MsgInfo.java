@@ -1,5 +1,8 @@
 package com.fang.cloud.entity;
 
+import com.fang.cloud.common.CustomJsonDateDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.util.Date;
 
 public class MsgInfo {
@@ -224,6 +227,7 @@ public class MsgInfo {
      *
      * @mbg.generated
      */
+    //@JsonDeserialize(using = CustomJsonDateDeserializer.class)
     public void setSendtime(Date sendtime) {
         this.sendtime = sendtime;
     }
@@ -272,6 +276,7 @@ public class MsgInfo {
      *
      * @mbg.generated
      */
+    //@JsonDeserialize(using = CustomJsonDateDeserializer.class)
     public void setCreatetime(Date createtime) {
         this.createtime = createtime;
     }
