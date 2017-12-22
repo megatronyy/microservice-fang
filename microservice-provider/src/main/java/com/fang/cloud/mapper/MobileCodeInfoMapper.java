@@ -50,4 +50,6 @@ public interface MobileCodeInfoMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(MobileCodeInfo record);
+
+    MobileCodeInfo selectByParas(String mobile);
 }

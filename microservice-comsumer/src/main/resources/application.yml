@@ -10,7 +10,7 @@ eureka:
   instance:
     prefer-ip-address: true
 myProps:
-  accesstoken: "api"
+  accesstoken: "wxapp"
 zuul:
   routes:
     baidu:
