@@ -75,7 +75,7 @@ public class UserController {
     public ResponseEntity<Integer> addAccount(@RequestBody UserAccount userAccount){
         int isExists = userAccountMapper.isExistsForUser(userAccount.getMobile());
         if(isExists>0){
-            return new ResponseEntity<Integer>(false, "手机号已经存在", -100, "", "", 0);
+            return new ResponseEntity<Integer>(true, "手机号已经存在", -100, "", "", 0);
         }else{
             //对密码进行md5加密
             userAccount.setPassword(Security.getMD5(userAccount.getPassword()));
@@ -102,7 +102,7 @@ public class UserController {
      * @param mobile
      * @return
      */
-    @RequestMapping(value = "login")
+    @RequestMapping(value = "login", method = { RequestMethod.GET })
     public ResponseEntity<UserAccount> Login(@RequestParam String mobile, @RequestParam String pwd){
         if(mobile.isEmpty() || pwd.isEmpty()){
             return new ResponseEntity<UserAccount>(false, "传入的参数有误", -99, "", "", null);
@@ -132,18 +132,22 @@ public class UserController {
     @RequestMapping(value = "send", method = { RequestMethod.POST })
     public ResponseEntity<Integer> sendMsg(@RequestBody MsgInfo msgInfo){
         if(msgInfo == null || msgInfo.getMobile()==""){
-            return new ResponseEntity<Integer>(false, "传入的参数有误", -99, "", "", 0);
+            return new ResponseEntity<Integer>(true, "传入的参数有误", -99, "", "", 0);
         }
 
         Integer ret = msgInfoMapper.insertSelective(msgInfo);
         if(ret == 0)
-            return new ResponseEntity<Integer>(false, "发送短信失败", -99, "", "", ret);
+            return new ResponseEntity<Integer>(true, "发送短信失败", -99, "", "", ret);
         else
             return new ResponseEntity<Integer>(true, "发送短信成功", 0, "", "", ret);
     }
-
-    @RequestMapping(value = "code", method = { RequestMethod.POST })
-    public ResponseEntity<Integer> getCode(@RequestBody MobileCodeInfo mobileCodeInfo){
+    /**
+     * 添加验证码
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "setcode", method = { RequestMethod.POST })
+    public ResponseEntity<Integer> setCode(@RequestBody MobileCodeInfo mobileCodeInfo){
         if(mobileCodeInfo == null || mobileCodeInfo.getMobile()==""){
             return new ResponseEntity<Integer>(false, "传入的参数有误", -99, "", "", 0);
         }
@@ -156,14 +160,35 @@ public class UserController {
 
             long min =  CommonLib.diffDate(preDate, newDate);
             if(min < 30){
-                return new ResponseEntity<Integer>(true, "验证码30分钟内有效", 0, "", "", 0);
+                return new ResponseEntity<Integer>(true, "已发送验证码30分钟内有效", 1, "", "", 0);
             }
         }
         //插入验证码
         Integer ret = mobileCodeInfoMapper.insertSelective(mobileCodeInfo);
         if(ret == 0)
-            return new ResponseEntity<Integer>(false, "添加验证码失败", -99, "", "", ret);
+            return new ResponseEntity<Integer>(true, "添加验证码失败", -99, "", "", ret);
         else
             return new ResponseEntity<Integer>(true, "添加验证码成功", 0, "", "", ret);
+    }
+    /**
+     * 验证验证码
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "vercode", method = { RequestMethod.POST })
+    public ResponseEntity<Integer> verifyCode(@RequestBody MobileCodeInfo mobileCodeInfo){
+        if(mobileCodeInfo == null || mobileCodeInfo.getMobile()==""){
+            return new ResponseEntity<Integer>(true, "传入的参数有误", -99, "", "", 0);
+        }
+
+        MobileCodeInfo preInfo = mobileCodeInfoMapper.selectByParas(mobileCodeInfo.getMobile());
+        if(preInfo == null)
+            return new ResponseEntity<Integer>(true, "未找到验证码", -99, "", "", 0);
+        if(mobileCodeInfo.getMobile().equals(preInfo.getMobile()) &&
+                mobileCodeInfo.getCode().equals(preInfo.getCode()))
+            return new ResponseEntity<Integer>(true, "验证通过", 0, "", "", 0);
+
+        return new ResponseEntity<Integer>(true, "验证失败", -99, "", "", 0);
+
     }
 }
