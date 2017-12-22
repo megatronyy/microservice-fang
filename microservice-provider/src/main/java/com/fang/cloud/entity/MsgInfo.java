@@ -1,6 +1,7 @@
 package com.fang.cloud.entity;
 
 import com.fang.cloud.common.CustomJsonDateDeserializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.Date;
@@ -58,6 +59,7 @@ public class MsgInfo {
      *
      * @mbg.generated
      */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date sendtime;
 
     /**
@@ -76,6 +78,7 @@ public class MsgInfo {
      *
      * @mbg.generated
      */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createtime;
 
     /**

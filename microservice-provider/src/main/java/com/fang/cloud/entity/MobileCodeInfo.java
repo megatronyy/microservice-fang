@@ -1,5 +1,9 @@
 package com.fang.cloud.entity;
 
+import com.fang.cloud.common.CustomJsonDateDeserializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.util.Date;
 
 public class MobileCodeInfo {
@@ -46,6 +50,7 @@ public class MobileCodeInfo {
      *
      * @mbg.generated
      */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createtime;
 
     /**
@@ -167,4 +172,5 @@ public class MobileCodeInfo {
     public void setCreatetime(Date createtime) {
         this.createtime = createtime;
     }
+
 }
