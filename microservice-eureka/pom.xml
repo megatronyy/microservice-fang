@@ -63,7 +63,7 @@
 				<artifactId>docker-maven-plugin</artifactId>
 				<version>0.4.14</version>
 				<configuration>
-					<dockerHost>http://172.20.13.189:2375</dockerHost>
+					<dockerHost>http://dockerhost:2375</dockerHost>
 					<imageName>fang/${project.artifactId}:${project.version}</imageName>
 					<forceTags>true</forceTags>
 					<baseImage>java</baseImage>
