@@ -15,3 +15,9 @@ services:
       - spring.profiles.active=peer2
   microservice-provider:
     image: fang/microservice-provider:0.0.1-SNAPSHOT
+    ports:
+      - "8010:8010"
+  microservice-comsumer:
+    image: fang/microservice-comsumer:0.0.1-SNAPSHOT
+    ports:
+      - "9000:9000"

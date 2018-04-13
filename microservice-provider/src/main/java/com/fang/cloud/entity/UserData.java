@@ -1,5 +1,7 @@
 package com.fang.cloud.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import java.util.List;
 
@@ -59,6 +61,7 @@ public class UserData {
      *
      * @mbg.generated
      */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastlogintime;
 
     /**

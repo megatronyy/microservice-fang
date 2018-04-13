@@ -34,9 +34,16 @@ public class AccessFilter extends ZuulFilter {
     public Object run() {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
-        String accessToken = request.getParameter("accesstoken");
-        log.info(String.format("Comsumer Info:%s, AccessToken:%s", accessToken.toString(), accesstoken));
+        String accessToken = request.getParameter("AppId");
 
+        if (accessToken == null){
+            ctx.setSendZuulResponse(false);
+            ctx.setResponseStatusCode(401);
+            ctx.setResponseBody("{\"HttpStatus\": 401, \"Message\": \"参数有误\", \"Success\": false}");
+            return null;
+        }
+
+        log.info(String.format("Comsumer Info:%s, AccessToken:%s", accessToken.toString(), accesstoken));
         if(!accessToken.equals(accesstoken)) {
             ctx.setSendZuulResponse(false);
             ctx.setResponseStatusCode(401);

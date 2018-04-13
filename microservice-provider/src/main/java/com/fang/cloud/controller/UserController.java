@@ -1,16 +1,15 @@
 package com.fang.cloud.controller;
 
+import com.fang.cloud.common.CommonLib;
 import com.fang.cloud.common.Security;
 import com.fang.cloud.dao.response.ResponseEntity;
 import com.fang.cloud.dao.request.UserRequestEntity;
-import com.fang.cloud.entity.Customization;
-import com.fang.cloud.entity.UserAccount;
-import com.fang.cloud.entity.UserData;
-import com.fang.cloud.mapper.CustomizationMapper;
-import com.fang.cloud.mapper.UserAccountMapper;
-import com.fang.cloud.mapper.UserDataMapper;
+import com.fang.cloud.entity.*;
+import com.fang.cloud.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +28,12 @@ public class UserController {
 
     @Autowired
     private UserAccountMapper userAccountMapper;
+
+    @Autowired
+    private MsgInfoMapper msgInfoMapper;
+
+    @Autowired
+    private MobileCodeInfoMapper mobileCodeInfoMapper;
 
     @RequestMapping(value = "info", method = { RequestMethod.POST })
     public ResponseEntity<UserData> getUserInfo(@RequestBody UserRequestEntity user){
@@ -70,7 +75,7 @@ public class UserController {
     public ResponseEntity<Integer> addAccount(@RequestBody UserAccount userAccount){
         int isExists = userAccountMapper.isExistsForUser(userAccount.getMobile());
         if(isExists>0){
-            return new ResponseEntity<Integer>(false, "手机号已经存在", -100, "", "", 0);
+            return new ResponseEntity<Integer>(true, "手机号已经存在", -100, "", "", 0);
         }else{
             //对密码进行md5加密
             userAccount.setPassword(Security.getMD5(userAccount.getPassword()));
@@ -94,10 +99,10 @@ public class UserController {
 
     /**
      * 用户登录
-     * @param userAccount
+     * @param mobile
      * @return
      */
-    @RequestMapping(value = "login")
+    @RequestMapping(value = "login", method = { RequestMethod.GET })
     public ResponseEntity<UserAccount> Login(@RequestParam String mobile, @RequestParam String pwd){
         if(mobile.isEmpty() || pwd.isEmpty()){
             return new ResponseEntity<UserAccount>(false, "传入的参数有误", -99, "", "", null);
@@ -110,9 +115,80 @@ public class UserController {
         param.put("password", md5Pwd);
 
         UserAccount userAccount = userAccountMapper.selectForLogin(param);
-        if(userAccount != null)
+        if(userAccount != null){
+            userAccount.setPassword("");
             return new ResponseEntity<UserAccount>(true, "用户登录成功", 0, "", "", userAccount);
-        else
+        }
+        else{
             return new ResponseEntity<UserAccount>(false, "用户名或密码错误", -100, "", "", null);
+        }
+    }
+
+    /**
+     * 发送短信
+     * @param msgInfo
+     * @return
+     */
+    @RequestMapping(value = "send", method = { RequestMethod.POST })
+    public ResponseEntity<Integer> sendMsg(@RequestBody MsgInfo msgInfo){
+        if(msgInfo == null || msgInfo.getMobile()==""){
+            return new ResponseEntity<Integer>(true, "传入的参数有误", -99, "", "", 0);
+        }
+
+        Integer ret = msgInfoMapper.insertSelective(msgInfo);
+        if(ret == 0)
+            return new ResponseEntity<Integer>(true, "发送短信失败", -99, "", "", ret);
+        else
+            return new ResponseEntity<Integer>(true, "发送短信成功", 0, "", "", ret);
+    }
+    /**
+     * 添加验证码
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "setcode", method = { RequestMethod.POST })
+    public ResponseEntity<Integer> setCode(@RequestBody MobileCodeInfo mobileCodeInfo){
+        if(mobileCodeInfo == null || mobileCodeInfo.getMobile()==""){
+            return new ResponseEntity<Integer>(false, "传入的参数有误", -99, "", "", 0);
+        }
+
+        //判断已发送的验证码是否过期
+        MobileCodeInfo preInfo = mobileCodeInfoMapper.selectByParas(mobileCodeInfo.getMobile());
+        if(preInfo != null){
+            Date preDate = preInfo.getCreatetime();
+            Date newDate = mobileCodeInfo.getCreatetime();
+
+            long min =  CommonLib.diffDate(preDate, newDate);
+            if(min < 30){
+                return new ResponseEntity<Integer>(true, "已发送验证码30分钟内有效", 1, "", "", 0);
+            }
+        }
+        //插入验证码
+        Integer ret = mobileCodeInfoMapper.insertSelective(mobileCodeInfo);
+        if(ret == 0)
+            return new ResponseEntity<Integer>(true, "添加验证码失败", -99, "", "", ret);
+        else
+            return new ResponseEntity<Integer>(true, "添加验证码成功", 0, "", "", ret);
+    }
+    /**
+     * 验证验证码
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "vercode", method = { RequestMethod.POST })
+    public ResponseEntity<Integer> verifyCode(@RequestBody MobileCodeInfo mobileCodeInfo){
+        if(mobileCodeInfo == null || mobileCodeInfo.getMobile()==""){
+            return new ResponseEntity<Integer>(true, "传入的参数有误", -99, "", "", 0);
+        }
+
+        MobileCodeInfo preInfo = mobileCodeInfoMapper.selectByParas(mobileCodeInfo.getMobile());
+        if(preInfo == null)
+            return new ResponseEntity<Integer>(true, "未找到验证码", -99, "", "", 0);
+        if(mobileCodeInfo.getMobile().equals(preInfo.getMobile()) &&
+                mobileCodeInfo.getCode().equals(preInfo.getCode()))
+            return new ResponseEntity<Integer>(true, "验证通过", 0, "", "", 0);
+
+        return new ResponseEntity<Integer>(true, "验证失败", -99, "", "", 0);
+
     }
 }

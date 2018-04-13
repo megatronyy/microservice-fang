@@ -1,5 +1,7 @@
 package com.fang.cloud.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class UserAccount {
@@ -55,6 +57,7 @@ public class UserAccount {
      *
      * @mbg.generated
      */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date lastlogintime;
 
     /**
@@ -64,6 +67,7 @@ public class UserAccount {
      *
      * @mbg.generated
      */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createtime;
 
     /**
@@ -73,6 +77,7 @@ public class UserAccount {
      *
      * @mbg.generated
      */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
 
     /**

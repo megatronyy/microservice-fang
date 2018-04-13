@@ -50,7 +50,7 @@
         </javaClientGenerator>
 
         <!-- 配置表信息 -->
-        <table tableName="ShopInfo" domainObjectName="ShopInfo" enableCountByExample="false"
+        <table tableName="MobileCodeInfo" domainObjectName="MobileCodeInfo" enableCountByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                enableUpdateByExample="false">
         </table>

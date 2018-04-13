@@ -1,5 +1,7 @@
 package com.fang.cloud.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class ShopPic {
@@ -37,6 +39,7 @@ public class ShopPic {
      *
      * @mbg.generated
      */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createtime;
 
     /**
