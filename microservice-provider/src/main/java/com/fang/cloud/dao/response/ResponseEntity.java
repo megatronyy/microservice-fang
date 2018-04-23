@@ -1,5 +1,7 @@
 package com.fang.cloud.dao.response;
 
+import com.alibaba.fastjson.JSON;
+
 /**
  * Created by quwb on 2017/12/6.
  */
@@ -37,4 +39,9 @@ public class ResponseEntity<T> {
 
     public T getData(){ return this.data; }
     public void setData(T data){ this.data = data; }
+
+    @Override
+    public String toString() {
+        return JSON.toJSONString(this);
+    }
 }

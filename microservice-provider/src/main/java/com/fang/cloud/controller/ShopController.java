@@ -20,13 +20,13 @@ public class ShopController {
     private BusinessTypeMapper businessTypeMapper;
 
     @GetMapping("getbusiness/{businessId}")
-    public ResponseEntity<BusinessType> getBusinessById(@PathVariable int businessId){
+    public String getBusinessById(@PathVariable int businessId){
         BusinessType findOne = this.businessTypeMapper.selectByPrimaryKey(businessId);
         //返回结果
         if(findOne != null){
-            return new ResponseEntity<BusinessType>(true, "获取用户信息成功", 0, "", "", findOne);
+            return new ResponseEntity<BusinessType>(true, "获取用户信息成功", 0, "", "", findOne).toString();
         }else{
-            return new ResponseEntity<BusinessType>(false, "获取用户信息失败", -100, "", "", findOne);
+            return new ResponseEntity<BusinessType>(false, "获取用户信息失败", -100, "", "", findOne).toString();
         }
     }
 }
